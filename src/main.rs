@@ -1,8 +1,8 @@
 use hex::{FromHex, ToHex}; // to pretty print hash
 use serde::{Deserialize, Serialize};
 use serde_json;
+use std::env;
 use std::time::SystemTime;
-use std::{env, fs};
 
 use secp256k1::{Message, PublicKey, Secp256k1, SecretKey};
 use sha2::{self, Digest};
@@ -25,16 +25,19 @@ fn main() {
     let args = env::args().collect::<Vec<String>>();
     let _program = args[0].clone();
 
-    if args.len() != 4 {
-        eprintln!("Usage: {} <latitude> <longitude> <secret_key>", _program);
-        return;
-    }
+    // if args.len() != 4 {
+    //     eprintln!("Usage: {} <latitude> <longitude> <secret_key>", _program);
+    //     return;
+    // }
 
     // retrieve arguments
-    let latitude: f64 = args[1].parse().expect("Latitude must be a number");
-    let longitude: f64 = args[2].parse().expect("Longitude must be a number");
-    let secret_key = hex::decode(&args[3]).expect("Invalid hex");
-    let secret_key_slice = secret_key.as_slice();
+    let latitude = 1 as f64;
+    let longitude = 2 as f64;
+    let secret_key_slice = [1 as u8; 32].as_ref();
+    // let latitude: f64 = args[1].parse().expect("Latitude must be a number");
+    // let longitude: f64 = args[2].parse().expect("Longitude must be a number");
+    // let secret_key = hex::decode(&args[3]).expect("Invalid hex");
+    // let secret_key_slice = secret_key.as_slice();
 
     // get current timestamp
     let timestamp: u64 = SystemTime::now()
@@ -92,7 +95,7 @@ fn main() {
     /*
      * Here the SignedPosition object would be sent to another party
      */
-    fs::write("out/out.json", &signed_payload).expect("Unable to write file");
+    // fs::write("out/out.json", &signed_payload).expect("Unable to write file");
 
     println!("Upon receiving the SignedPosition object, the other party would deserialize it and verify the signature\n");
     // deserialize SignedPosition object
